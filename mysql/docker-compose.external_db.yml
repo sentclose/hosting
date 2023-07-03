@@ -1,0 +1,35 @@
+version: "3.3"
+services:
+  sentc:
+    image: sentc/api:${SENTC_VERSION}
+    restart: always
+    command: sh -c "sleep 10 && /sentc_api_init && /server_api_all"
+    ports:
+      - "3002:3002"
+    env_file:
+      - ../sentc.env
+    environment:
+      DB_HOST: ${MYSQL_HOST}
+      DB_NAME: ${MYSQL_DB}
+      DB_USER: ${MYSQL_USER}
+      DB_PASS: ${MYSQL_PASSWORD}
+      LOCAL_STORAGE_PATH: /var/www/storage
+    volumes:
+      - ../storage:/var/www/storage
+
+  sentc_file_worker:
+    image: sentc/file_worker:${SENTC_VERSION}
+    restart: always
+    command: sh -c "sleep 20 && /file_worker"
+    depends_on:
+      - sentc
+    env_file:
+      - ../sentc.env
+    environment:
+      DB_HOST: ${MYSQL_HOST}
+      DB_NAME: ${MYSQL_DB}
+      DB_USER: ${MYSQL_USER}
+      DB_PASS: ${MYSQL_PASSWORD}
+      LOCAL_STORAGE_PATH: /var/www/storage
+    volumes:
+      - ../storage:/var/www/storage
