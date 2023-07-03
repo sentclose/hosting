@@ -1,0 +1,4 @@
+version: "3.3"
+services:
+  sentc-key_gen:
+    image: sentc/key_gen:${SENTC_VERSION}
