@@ -1,0 +1,31 @@
+version: "3.3"
+services:
+  sentc:
+    image: sentc/api_sqlite:${SENTC_VERSION}
+    restart: always
+    command: sh -c "sleep 5 && /sentc_api_init && /server_api_all"
+    ports:
+      - "3002:3002"
+    env_file:
+      - ../sentc.env
+    environment:
+      DB_PATH: /var/www/sqlite/db.sqlite3
+      LOCAL_STORAGE_PATH: /var/www/storage
+    volumes:
+      - ../storage:/var/www/storage
+      - ../db/sqlite:/var/www/sqlite
+
+  sentc_file_worker:
+    image: sentc/file_worker_sqlite:${SENTC_VERSION}
+    restart: always
+    command: sh -c "sleep 10 && /file_worker"
+    depends_on:
+      - sentc
+    env_file:
+      - ../sentc.env
+    environment:
+      DB_PATH: /var/www/sqlite/db.sqlite3
+      LOCAL_STORAGE_PATH: /var/www/storage
+    volumes:
+      - ../storage:/var/www/storage
+      - ../db/sqlite:/var/www/sqlite
