@@ -14,6 +14,8 @@ services:
       DB_USER: ${MYSQL_USER}
       DB_PASS: ${MYSQL_PASSWORD}
       LOCAL_STORAGE_PATH: /var/www/storage
+      CACHE: ${CACHE}
+      REDIS_URL: ${REDIS_URL}
     volumes:
       - ../storage:/var/www/storage
 
