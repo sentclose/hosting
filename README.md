@@ -7,7 +7,10 @@ Follow the steps to self-host the sentc api with docker compose.
 1. Copy and rename the following files:
     - `.env.sample` -> `.env`
     - `sentc.env.sample` -> `sentc.env`
-2. Create a Root key with the sentc key gen and put it in ROOT_KEY
+2. Create a Root key with the sentc key gen and put it in ROOT_KEY:
+```bash:no-line-numbers
+docker-compose -f key_gen/docker-compose.yml up
+```
 3. (optional but recommended) change mysql env in the .env file
 
 ## Mariadb
