@@ -1,0 +1,61 @@
+version: "3.3"
+services:
+  sentc-db:
+    image: mariadb:${MARIADB_VERSION}
+    restart: always
+    volumes:
+      - db-data:/var/lib/mysql
+      - db-conf:/etc/mysql
+      - db-logs:/var/lib/mysql/logs
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: sentc
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+
+  sentc:
+    image: sentc/api:${SENTC_VERSION}
+    restart: always
+    command: sh -c "sleep 10 && /sentc_api_init && /server_api_all"
+    depends_on:
+      - sentc-db
+    ports:
+      - "3002:3002"
+    env_file:
+      - ../sentc.env
+    environment:
+      DB_HOST: sentc-db
+      DB_NAME: sentc
+      DB_USER: ${MYSQL_USER}
+      DB_PASS: ${MYSQL_PASSWORD}
+      LOCAL_STORAGE_PATH: /var/www/storage
+    volumes:
+      - ../storage:/var/www/storage
+
+  sentc_file_worker:
+    image: sentc/file_worker:${SENTC_VERSION}
+    restart: always
+    command: sh -c "sleep 20 && /file_worker"
+    depends_on:
+      - sentc-db
+      - sentc
+    env_file:
+      - ../sentc.env
+    environment:
+      DB_HOST: sentc-db
+      DB_NAME: sentc
+      DB_USER: ${MYSQL_USER}
+      DB_PASS: ${MYSQL_PASSWORD}
+      LOCAL_STORAGE_PATH: /var/www/storage
+    volumes:
+      - ../storage:/var/www/storage
+
+volumes:
+  db-data:
+    driver: local
+  db-conf:
+    driver: local
+  db-logs:
+    driver: local
