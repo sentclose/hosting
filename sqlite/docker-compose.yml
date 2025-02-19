@@ -26,6 +26,8 @@ services:
     environment:
       DB_PATH: /var/www/sqlite/db.sqlite3
       LOCAL_STORAGE_PATH: /var/www/storage
+      LOCAL_KEY_STORAGE: /var/www/storage_key
     volumes:
       - ../storage:/var/www/storage
       - ../db/sqlite:/var/www/sqlite
+      - ../storage_key:/var/www/storage_key

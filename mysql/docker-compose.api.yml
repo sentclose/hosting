@@ -14,5 +14,7 @@ services:
       DB_USER: ${MYSQL_USER}
       DB_PASS: ${MYSQL_PASSWORD}
       LOCAL_STORAGE_PATH: /var/www/storage
+      LOCAL_KEY_STORAGE: /var/www/storage_key
     volumes:
       - ../storage:/var/www/storage
+      - ../storage_key:/var/www/storage_key
