@@ -22,7 +22,7 @@ services:
       - redis-data:/data
 
   sentc:
-    image: sentc/api:${SENTC_VERSION}
+    image: sentc/api:${SENTC_API_VERSION}
     restart: always
     command: sh -c "sleep 10 && /sentc_api_init && /server_api_all"
     depends_on:
@@ -46,7 +46,7 @@ services:
       - ../storage_key:/var/www/storage_key
 
   sentc_file_worker:
-    image: sentc/file_worker:${SENTC_VERSION}
+    image: sentc/file_worker:${SENTC_FILE_WORKER_VERSION}
     restart: always
     command: sh -c "sleep 20 && /file_worker"
     depends_on:

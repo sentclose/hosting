@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   sentc_file_worker:
-    image: sentc/file_worker:${SENTC_VERSION}
+    image: sentc/file_worker:${SENTC_FILE_WORKER_VERSION}
     restart: always
     command: sh -c "sleep 20 && /sentc_api_init && /file_worker"
     env_file:
